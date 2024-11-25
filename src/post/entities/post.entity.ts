@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } f
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from 'src/user/entities/user.entity';
 import { v4 as uuid } from 'uuid';
+import { IsArray } from 'class-validator';
 
 @Entity()
 export class Post {
@@ -52,6 +53,10 @@ export class Post {
   @Column('simple-array', { nullable: true, default: null })
   @ApiProperty({ description: 'Lista de palabras clave asociadas al post', example: ['cuidado', 'abuelos', 'bienestar'], nullable: true })
   keywords: string[] | null;
+
+  @Column('simple-array', { nullable: true, default: null })
+  @IsArray()
+  extraImages:  string[] | null;
 
   @Column()
   size:number

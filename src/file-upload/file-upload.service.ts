@@ -38,6 +38,27 @@ uploadImageFetch = async  (file:Express.Multer.File, postId:string) => {
   return `La imagen del producto con id ${postId} se actualizo con exito`
 }
 
+uploadImagesFetch = async (files: Express.Multer.File[], postId: string) => {
+  const postFound = await this.postRepository.findOneBy({ id: postId });
+  if (!postFound) throw new BadRequestException('No existe el post que quiere actualizar');
+
+  const uploadedUrls: string[] = [];
+
+  for (const file of files) {
+    const fileUrl = (await this.uploadImage(file)).secure_url;
+    uploadedUrls.push(fileUrl);
+  }
+
+  const updatedPost = await this.postRepository.update(
+    { id: postFound.id },
+    { extraImages: [...(postFound.extraImages || []), ...uploadedUrls] },
+  );
+
+  if (!updatedPost) throw new BadGatewayException('Hubo un error al actualizar el post');
+
+  return `Las imágenes del producto con id ${postId} se actualizaron con éxito.`;
+};
+
 
 
   findAll() {

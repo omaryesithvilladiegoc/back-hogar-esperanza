@@ -83,11 +83,14 @@ export class PostService {
     return `This action updates a #${id} post`;
   }
 
-  async remove(id: number) {
-    const posts:Post[] = await this.postRepository.find()
-    posts.forEach(async (post) => {
-    })
-   
+  async remove(id: string) {
+   try {
+    const response = await this.postRepository.delete({id})
+    if(!response) throw new BadRequestException('HUbo un error al eliminar el post')
+    return response
+   } catch (error) {
+    throw error
+   }
   }
 
   async updateSize(size:number,idPost:string) {
