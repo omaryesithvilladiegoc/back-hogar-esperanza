@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
 
             if(payload.isAdmin) {
                 payload.roles = [Roles.ADMIN]
-            } {
+            } else {
                 payload.roles = [Roles.USER]
             }
             request.user = payload

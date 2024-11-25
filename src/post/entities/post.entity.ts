@@ -52,4 +52,7 @@ export class Post {
   @Column('simple-array', { nullable: true, default: null })
   @ApiProperty({ description: 'Lista de palabras clave asociadas al post', example: ['cuidado', 'abuelos', 'bienestar'], nullable: true })
   keywords: string[] | null;
+
+  @Column()
+  size:number
 }

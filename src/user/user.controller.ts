@@ -1,13 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { Role } from 'src/auth/decorators/role.decorator';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/enums/roles.enum';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+
+  // @ApiBearerAuth()
+  // @Role(Roles.ADMIN)
+  // @UseGuards(AuthGuard,RolesGuard)
   @Post()
   async create(@Body() createUserDto: CreateUserDto):Promise<User> {
     try {
@@ -17,6 +26,9 @@ export class UserController {
     }
   }
 
+  @ApiBearerAuth()
+  @Role(Roles.ADMIN)
+  @UseGuards(AuthGuard,RolesGuard)
   @Get()
   async findAll():Promise<User[]> {
     try {

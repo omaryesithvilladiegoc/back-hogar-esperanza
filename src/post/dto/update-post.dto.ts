@@ -1,4 +1,13 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePostDto } from './create-post.dto';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNumber } from "class-validator";
 
-export class UpdatePostDto extends PartialType(CreatePostDto) {}
+export class UpdatePostDto  {
+
+    @IsNumber()
+
+  @ApiProperty({
+    description: 'actualizar la medida de post',
+    example: 5,
+  })
+    size:number
+}
