@@ -15,8 +15,6 @@ export class UsersFormController {
     } catch (error) {
       throw error
     }
-    
-   
   }
   @Get()
   findAll() {
