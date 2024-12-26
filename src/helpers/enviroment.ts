@@ -15,4 +15,4 @@ export const CLOUDINARY_API_KEY= process.env.CLOUDINARY_API_KEY
 export const CLOUDINARY_API_SECRET= process.env.CLOUDINARY_API_SECRET
 export const EMAIL_HOST = process.env.EMAIL_HOST
 export const EMAIL_USERNAME = process.env.EMAIL_USERNAME
-export const EMAIL_PASSWORD = process.env.EMAIL_HOST
+export const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD

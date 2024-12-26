@@ -28,7 +28,7 @@ import { SendMailsModule } from './send-mails/send-mails.module';
       secure: true,
       auth: {
         user: EMAIL_USERNAME,
-        pass: EMAIL_PASSWORD,
+        pass: EMAIL_PASSWORD, 
       },
     },
   }),

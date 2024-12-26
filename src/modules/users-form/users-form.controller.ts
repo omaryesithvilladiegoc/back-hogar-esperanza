@@ -9,10 +9,15 @@ export class UsersFormController {
 
   @Post()
   async create(@Body() createUsersFormDto: CreateUserFormDto) {
+    console.log(createUsersFormDto);
+    
     try {
       const newUserForm = await this.usersFormService.create(createUsersFormDto);
+      console.log(newUserForm);
       return newUserForm;
     } catch (error) {
+      console.log(error);
+      
       throw error
     }
   }

@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { APP_PORT } from './helpers/enviroment';
+import { APP_PORT, EMAIL_HOST, EMAIL_PASSWORD } from './helpers/enviroment';
 import morgan from 'morgan';
 
 async function bootstrap() {
@@ -18,6 +18,7 @@ async function bootstrap() {
     .setDescription('')
     .addBearerAuth()
     .build();
+
 
   const document = SwaggerModule.createDocument(app, swaggerOptions);
   SwaggerModule.setup('api', app, document);
