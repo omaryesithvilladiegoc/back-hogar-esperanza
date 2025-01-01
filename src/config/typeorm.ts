@@ -6,15 +6,15 @@ const config: DataSourceOptions = {
     type: 'postgres',
     url:INTERNAL_URL_DATABASE,
     // database: DB_NAME,
-    // host: DB_HOST,
+    // host: DB_HOST, 
     // port: Number(DB_PORT),
     // username: DB_USERNAME,
-    // password: DB_PASSWORD,
+    // password: String(DB_PASSWORD),
     entities: ['dist/**/*.entity{.ts,.js}'],
     migrations: ['dist/migrations/*{.ts,.js}'],
-    logging: false,
+    logging: true,
     synchronize: true,
-    dropSchema: true
+    dropSchema: false
 }
 
 export default registerAs('typeorm', () => config);
