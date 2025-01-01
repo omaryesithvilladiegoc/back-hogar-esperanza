@@ -14,9 +14,9 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
 
-  // @ApiBearerAuth()
-  // @Role(Roles.ADMIN)
-  // @UseGuards(AuthGuard,RolesGuard)
+  @ApiBearerAuth()
+  @Role(Roles.ADMIN)
+  @UseGuards(AuthGuard,RolesGuard)
   @Post()
   async create(@Body() createUserDto: CreateUserDto):Promise<User> {
     try {
