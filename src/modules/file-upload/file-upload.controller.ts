@@ -116,6 +116,8 @@ export class FileUploadController {
 
       return { msg: 'Files uploaded successfully', response };
     } catch (error) {
+      console.log(error);
+      
       throw error;
     }
   }
