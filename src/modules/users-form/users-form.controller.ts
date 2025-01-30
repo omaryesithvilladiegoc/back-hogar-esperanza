@@ -1,10 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { UsersFormService } from './users-form.service';
-import { UpdateUsersFormDto } from './dto/update-users-form.dto';
 import { CreateUserFormDto } from './dto/create-users-form.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { Role } from '../auth/decorators/role.decorator';
+import { Roles } from '../auth/enums/roles.enum';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('users-form')
 export class UsersFormController {
+ 
   constructor(private readonly usersFormService: UsersFormService) {}
 
   @Post()
@@ -21,6 +26,10 @@ export class UsersFormController {
       throw error
     }
   }
+
+  @ApiBearerAuth()
+  @Role(Roles.ADMIN)
+  @UseGuards(AuthGuard,RolesGuard)
   @Get()
   findAll() {
     return this.usersFormService.findAll();
