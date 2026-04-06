@@ -1,4 +1,11 @@
-import { IsString, IsNotEmpty, IsOptional, IsUUID, IsUrl, IsArray } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsUUID,
+  IsUrl,
+  IsArray,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePostDto {
@@ -44,13 +51,11 @@ export class CreatePostDto {
 
   @IsArray()
   @IsNotEmpty()
-  keywords:string[]
+  keywords: string[];
 
   @IsNotEmpty()
-  size:number
+  size: number;
 
   @IsUUID()
   idUser: string;
-
-
 }

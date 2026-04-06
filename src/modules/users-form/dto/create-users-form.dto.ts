@@ -1,16 +1,33 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsEmail, IsPhoneNumber, IsInt, Min, Max } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsPhoneNumber,
+  IsInt,
+  Min,
+  Max,
+} from 'class-validator';
+
 
 export class CreateUserFormDto {
-  @ApiProperty({ description: 'Nombre completo del interesado', example: 'Juan Pérez' })
+  @ApiProperty({
+    description: 'Nombre completo del interesado',
+    example: 'Juan Pérez',
+  })
   @IsString()
   fullName: string;
 
-  @ApiProperty({ description: 'Correo electrónico del interesado', example: 'juan.perez@email.com' })
+  @ApiProperty({
+    description: 'Correo electrónico del interesado',
+    example: 'juan.perez@email.com',
+  })
   @IsEmail()
   email: string;
 
-  @ApiProperty({ description: 'Número de teléfono del interesado', example: '1234567890' })
+  @ApiProperty({
+    description: 'Número de teléfono del interesado',
+    example: '1234567890',
+  })
   @IsPhoneNumber(null)
   phone: string;
 
@@ -20,7 +37,10 @@ export class CreateUserFormDto {
   @Max(100)
   age: number;
 
-  @ApiProperty({ description: 'Plan de interés', example: 'Hogar permanente compartido' })
-  @IsString()
+  @ApiProperty({
+    description: 'Plan de interés',
+    example: 'Hogar permanente compartido',
+  })
+
   plan: string;
 }

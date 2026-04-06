@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -13,37 +22,36 @@ import { Roles } from 'src/modules/auth/enums/roles.enum';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-
-  @ApiBearerAuth()
-  @Role(Roles.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
+  // @ApiBearerAuth()
+  // @Role(Roles.ADMIN)
+  // @UseGuards(AuthGuard,RolesGuard)
   @Post()
-  async create(@Body() createUserDto: CreateUserDto):Promise<User> {
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     try {
       return await this.userService.create(createUserDto);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   @ApiBearerAuth()
   @Role(Roles.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
-  async findAll():Promise<User[]> {
+  async findAll(): Promise<User[]> {
     try {
       return await this.userService.findAll();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string):Promise<User> {
+  async findOne(@Param('id') id: string): Promise<User> {
     try {
       return await this.userService.findOne(id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 

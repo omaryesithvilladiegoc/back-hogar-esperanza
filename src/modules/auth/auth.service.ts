@@ -1,40 +1,64 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { LoginDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { User } from 'src/modules/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectRepository(User) private userRepository:Repository<User>, private readonly jsonWebTokenService: JwtService){}
-
+  constructor(
+    @InjectRepository(User) private userRepository: Repository<User>,
+    private readonly jsonWebTokenService: JwtService,
+  ) {}
 
   async login(loginDto: LoginDto) {
-    const {password,email} = loginDto
+    const { password, email } = loginDto;
 
     try {
-      const userFound: User = await this.userRepository.findOneBy({email})
-      if(!userFound) throw new UnauthorizedException('Credenciales invalidas')
-      const validatePassword: Boolean = await bcrypt.compare(password,userFound.password)
-    if(!validatePassword) throw new UnauthorizedException('Credenciales invalidas')
-    const payload = {
-  id:userFound.id,
-email:userFound.email,
-isAdmin:userFound.isAdmin
-}
+      const userFound: User = await this.userRepository.findOneBy({ email });
+      if (!userFound) throw new UnauthorizedException('Credenciales invalidas');
+      const validatePassword: Boolean = await bcrypt.compare(
+        password,
+        userFound.password,
+      );
+      if (!validatePassword)
+        throw new UnauthorizedException('Credenciales invalidas');
+      const payload = {
+        id: userFound.id,
+        email: userFound.email,
+        isAdmin: userFound.isAdmin,
+      };
 
-const token = this.jsonWebTokenService.sign(payload)
-return {
-  message:'Login exitoso',
-  token
-}
+      const token = this.jsonWebTokenService.sign(payload);
+      return {
+        message: 'Login exitoso',
+        token,
+      };
     } catch (error) {
-      throw new BadRequestException (error.message)
+      throw error;
+    }
+  }
 
+  async logOut(headers: any) {
+    try {
+      const token = headers.authorization.substring(7); // Remove 'Bearer ' prefix
+
+      try {
+        const payload = this.jsonWebTokenService.verify(token);
+        console.log(`Token blacklisted: ${token}`);
+        return { message: 'Logout exitoso' };
+      } catch (err) {
+        throw new UnauthorizedException('Token inválido o expirado');
+      }
+    } catch (error) {
+      throw error;
     }
   }
 

@@ -37,7 +37,7 @@ export class FileUploadController {
   })
   @ApiBearerAuth()
   @Role(Roles.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(FileInterceptor('file'))
   async uploadImage(
     @Param('id', ParseUUIDPipe) idProduct: string,
@@ -58,11 +58,13 @@ export class FileUploadController {
   ) {
     try {
       console.log(file);
-      const response = await this.fileUploadService.uploadImageFetch(file, idProduct);
-      return  {msg:response}
-
+      const response = await this.fileUploadService.uploadImageFetch(
+        file,
+        idProduct,
+      );
+      return { msg: response };
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -109,15 +111,15 @@ export class FileUploadController {
         throw new BadRequestException('No files uploaded');
       }
 
-     
-      
-        const response = await this.fileUploadService.uploadImagesFetch(files, idProduct);
-      
+      const response = await this.fileUploadService.uploadImagesFetch(
+        files,
+        idProduct,
+      );
 
       return { msg: 'Files uploaded successfully', response };
     } catch (error) {
       console.log(error);
-      
+
       throw error;
     }
   }

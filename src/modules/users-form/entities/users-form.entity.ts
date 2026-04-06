@@ -4,19 +4,31 @@ import { ApiProperty } from '@nestjs/swagger';
 @Entity()
 export class UsersForm {
   @PrimaryGeneratedColumn('uuid')
-  @ApiProperty({ description: 'ID único del formulario de usuario', example: '9b4e5c1f-4532-46f2-9c9b-3d42c5cf8ed1' })
+  @ApiProperty({
+    description: 'ID único del formulario de usuario',
+    example: '9b4e5c1f-4532-46f2-9c9b-3d42c5cf8ed1',
+  })
   id: string;
 
   @Column()
-  @ApiProperty({ description: 'Nombre completo del interesado', example: 'Juan Pérez' })
+  @ApiProperty({
+    description: 'Nombre completo del interesado',
+    example: 'Juan Pérez',
+  })
   fullName: string;
 
   @Column({ unique: true })
-  @ApiProperty({ description: 'Correo electrónico del interesado', example: 'juan.perez@email.com' })
+  @ApiProperty({
+    description: 'Correo electrónico del interesado',
+    example: 'juan.perez@email.com',
+  })
   email: string;
 
   @Column()
-  @ApiProperty({ description: 'Número de teléfono del interesado', example: '1234567890' })
+  @ApiProperty({
+    description: 'Número de teléfono del interesado',
+    example: '1234567890',
+  })
   phone: string;
 
   @Column()
@@ -24,7 +36,9 @@ export class UsersForm {
   age: number;
 
   @Column()
-  @ApiProperty({ description: 'Plan de interés', example: 'Hogar permanente compartido' })
+  @ApiProperty({
+    description: 'Plan de interés',
+    example: 'Hogar permanente compartido',
+  })
   plan: string;
-
 }

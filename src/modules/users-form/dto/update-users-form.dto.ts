@@ -1,3 +1,3 @@
 import { PartialType } from '@nestjs/mapped-types';
 
-export class UpdateUsersFormDto  {}
+export class UpdateUsersFormDto {}

@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -13,19 +23,16 @@ import { UserIdInterceptor } from './interceptors/userId.interceptor';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-
   @ApiBearerAuth()
   @Role(Roles.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(UserIdInterceptor)
   @Post()
   async create(@Body() createPostDto: CreatePostDto) {
-    
     try {
       return await this.postService.create(createPostDto);
-    
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -33,9 +40,8 @@ export class PostController {
   async findAll() {
     try {
       return await this.postService.findAll();
-
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -44,29 +50,33 @@ export class PostController {
     try {
       return this.postService.findOne(id);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   @Patch('/update-size/:id')
   @ApiBearerAuth()
   @Role(Roles.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
-  async updateSizePost(@Param('id') id: string, @Body() UpdatePostDto: UpdatePostDto) {
-    const {size} = UpdatePostDto
+  @UseGuards(AuthGuard, RolesGuard)
+  async updateSizePost(
+    @Param('id') id: string,
+    @Body() UpdatePostDto: UpdatePostDto,
+  ) {
+    const { size } = UpdatePostDto;
     try {
-      const response = await this.postService.updateSize(size,id)
-      return response
+      const response = await this.postService.updateSize(size, id);
+      return response;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-
-
   @Patch(':id')
+  @ApiBearerAuth()
+  @Role(Roles.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(+id, updatePostDto);
+    return this.postService.update(id, updatePostDto);
   }
 
   @Delete(':id')

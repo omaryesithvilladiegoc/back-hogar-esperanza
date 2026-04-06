@@ -9,31 +9,28 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('users-form')
 export class UsersFormController {
- 
   constructor(private readonly usersFormService: UsersFormService) {}
 
   @Post()
   async create(@Body() createUsersFormDto: CreateUserFormDto) {
     console.log(createUsersFormDto);
-    
+
     try {
-      const newUserForm = await this.usersFormService.create(createUsersFormDto);
-      console.log(newUserForm);
+      const newUserForm =
+        await this.usersFormService.create(createUsersFormDto);
       return newUserForm;
     } catch (error) {
       console.log(error);
-      
-      throw error
+
+      throw error;
     }
   }
 
   @ApiBearerAuth()
   @Role(Roles.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get()
   findAll() {
     return this.usersFormService.findAll();
   }
-
- 
 }

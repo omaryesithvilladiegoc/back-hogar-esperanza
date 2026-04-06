@@ -1,4 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';import { MailerService } from '@nestjs-modules/mailer';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { MailerService } from '@nestjs-modules/mailer';
 import { SendMailInput } from './dto/create-send-mail.dto';
 
 @Injectable()

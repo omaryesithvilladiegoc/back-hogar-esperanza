@@ -6,7 +6,10 @@ import { Post } from 'src/modules/post/entities/post.entity';
 @Entity()
 export class Like {
   @PrimaryGeneratedColumn('uuid')
-  @ApiProperty({ description: 'ID único del like', example: 'd9b5d1f3-c09e-4f5a-b8f9-d4fb8bdb7c85' })
+  @ApiProperty({
+    description: 'ID único del like',
+    example: 'd9b5d1f3-c09e-4f5a-b8f9-d4fb8bdb7c85',
+  })
   id: string;
 
   @ManyToOne(() => User, (user) => user.likes)

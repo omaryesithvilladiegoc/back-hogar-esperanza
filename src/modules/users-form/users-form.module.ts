@@ -4,9 +4,10 @@ import { UsersFormController } from './users-form.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersForm } from './entities/users-form.entity';
 import { SendMailsService } from '../send-mails/send-mails.service';
+import { Program } from '../plans/entities/plan.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([UsersForm])],
+  imports: [TypeOrmModule.forFeature([UsersForm, Program])],
   controllers: [UsersFormController],
   providers: [UsersFormService, SendMailsService],
 })

@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Headers,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
@@ -9,16 +18,26 @@ export class AuthController {
 
   @Post()
   async create(@Body() createAuthDto: LoginDto) {
-    try {   
-       return await this.authService.login(createAuthDto);
+    try {
+      return await this.authService.login(createAuthDto);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   @Get()
   findAll() {
     return this.authService.findAll();
+  }
+
+  @Post('logout')
+  async logOut(@Headers() headers: Headers) {
+    try {
+      console.log(headers);
+      return await this.authService.logOut(headers);
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Get(':id')

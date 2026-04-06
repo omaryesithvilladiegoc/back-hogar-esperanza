@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from 'src/modules/post/entities/post.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Post])],
+  imports: [TypeOrmModule.forFeature([Post])],
   controllers: [FileUploadController],
   providers: [FileUploadService, CloudinaryConfig],
 })
