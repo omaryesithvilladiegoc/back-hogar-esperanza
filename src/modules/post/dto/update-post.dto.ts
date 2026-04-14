@@ -58,6 +58,15 @@ export class UpdatePostDto {
   keywords?: string[];
 
   @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  @ApiPropertyOptional({
+    description: 'Imagenes adicionales del post',
+    example: ['https://cdn.example.com/extra-1.jpg'],
+  })
+  extraImages?: string[];
+
+  @IsOptional()
   @IsNumber()
   @Min(1)
   @Max(12)

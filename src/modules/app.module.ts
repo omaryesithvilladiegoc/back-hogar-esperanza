@@ -11,6 +11,8 @@ import {
   EMAIL_HOST,
   EMAIL_PASSWORD,
   EMAIL_USERNAME,
+  JWT_AUDIENCE,
+  JWT_ISSUER,
   JWT_SECRET,
 } from '../helpers/enviroment';
 import { DonationsModule } from './donations/donations.module';
@@ -62,6 +64,8 @@ import { ProgramFeatureModule } from './program-feature/program-feature.module';
       secret: JWT_SECRET,
       signOptions: {
         expiresIn: '1h',
+        issuer: JWT_ISSUER,
+        audience: JWT_AUDIENCE,
       },
     }),
     SendMailsModule,

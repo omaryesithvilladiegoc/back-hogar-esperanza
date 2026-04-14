@@ -16,3 +16,5 @@ export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
 export const EMAIL_HOST = process.env.MAIL_HOST;
 export const EMAIL_USERNAME = process.env.MAIL_USER;
 export const EMAIL_PASSWORD = process.env.MAIL_PASS;
+export const JWT_ISSUER = process.env.JWT_ISSUER || 'hogar-esperanza-api';
+export const JWT_AUDIENCE = process.env.JWT_AUDIENCE || 'hogar-esperanza-client';

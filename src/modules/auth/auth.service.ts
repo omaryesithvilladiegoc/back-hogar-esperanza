@@ -11,6 +11,9 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
+const DUMMY_PASSWORD_HASH = bcrypt.hashSync('hogar-esperanza-dummy-password', 10);
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -23,13 +26,21 @@ export class AuthService {
 
     try {
       const userFound: User = await this.userRepository.findOneBy({ email });
-      if (!userFound) throw new UnauthorizedException('Credenciales invalidas');
+      if (!userFound) {
+        await bcrypt.compare(password, DUMMY_PASSWORD_HASH);
+        await delay(500);
+        throw new UnauthorizedException('Credenciales invalidas');
+      }
+
       const validatePassword: Boolean = await bcrypt.compare(
         password,
         userFound.password,
       );
-      if (!validatePassword)
+      if (!validatePassword) {
+        await delay(500);
         throw new UnauthorizedException('Credenciales invalidas');
+      }
+
       const payload = {
         id: userFound.id,
         email: userFound.email,

@@ -1,10 +1,7 @@
-import { Program } from "src/modules/plans/entities/plan.entity";
-
 export const programs = [
   {
     title: 'Hogar Permanente Diamante',
-    image:
-      'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=600&q=80',
+    image: 'https://res.cloudinary.com/dbzbkk9l6/image/upload/v1773096343/IMG_8963_pncodl.webp',
     features: [
       'Habitación privada con baño independiente.',
       'Aire acondicionado.',
@@ -29,8 +26,7 @@ export const programs = [
   },
   {
     title: 'Hogar Permanente Esmeralda',
-    image:
-      'https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?w=600&q=80',
+    image: 'https://res.cloudinary.com/dbzbkk9l6/image/upload/v1773096318/IMG_3278_q5dsqa.webp',
     features: [
       'Habitación privada.',
       'Aire acondicionado.',
@@ -55,8 +51,7 @@ export const programs = [
   },
   {
     title: 'Hogar Permanente Oro',
-    image:
-      'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80',
+    image: 'https://res.cloudinary.com/dbzbkk9l6/image/upload/v1773096305/IMG_1991_nipxnn.webp',
     features: [
       'Habitación privada.',
       'Tres comidas principales y 2 meriendas.',
@@ -80,8 +75,7 @@ export const programs = [
   },
   {
     title: 'Hogar Permanente VIP Compartido',
-    image:
-      'https://images.unsplash.com/photo-1516307365426-bea591f05011?w=600&q=80',
+    image: 'https://res.cloudinary.com/dbzbkk9l6/image/upload/v1773096302/IMG_1979_zdiooi.webp',
     features: [
       'Habitación compartida con baño compartido.',
       'Aire acondicionado.',
@@ -106,8 +100,7 @@ export const programs = [
   },
   {
     title: 'Hogar Permanente Compartido',
-    image:
-      'https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=600&q=80',
+    image: 'https://res.cloudinary.com/dbzbkk9l6/image/upload/v1773096293/IMG_1917_gfyuyx.webp',
     features: [
       'Habitación compartida con baño compartido.',
       'Tres comidas principales y 2 meriendas.',
@@ -131,8 +124,7 @@ export const programs = [
   },
   {
     title: 'Hogar Vacaciones',
-    image:
-      'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=600&q=80',
+    image: 'https://res.cloudinary.com/dbzbkk9l6/image/upload/v1773096292/IMG_1905_y1782q.webp',
     features: [
       'Tres comidas principales y 2 meriendas.',
       'Aseo y mantenimiento a la habitación diario.',
@@ -151,8 +143,7 @@ export const programs = [
   },
   {
     title: 'Hogar Cuidado Diario',
-    image:
-      'https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=600&q=80',
+    image: 'https://res.cloudinary.com/dbzbkk9l6/image/upload/v1773096286/IMG_1779_vxs5wu.webp',
     features: [
       'Tres comidas principales y 2 meriendas.',
       'Aseo y mantenimiento diario.',

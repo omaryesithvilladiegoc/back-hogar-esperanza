@@ -36,7 +36,7 @@ export class FileUploadService {
       throw new BadRequestException('No existe el post que quiere adctualizar');
     const fileUrl = (await this.uploadImage(file)).secure_url;
 
-    const updatedPost = this.postRepository.update(
+    const updatedPost = await this.postRepository.update(
       { id: postFound.id },
       { image: fileUrl },
     );

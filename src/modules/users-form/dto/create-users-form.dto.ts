@@ -6,6 +6,7 @@ import {
   IsInt,
   Min,
   Max,
+  IsOptional,
 } from 'class-validator';
 
 
@@ -43,4 +44,8 @@ export class CreateUserFormDto {
   })
 
   plan: string;
+
+  @IsOptional()
+  @IsString()
+  website?: string;
 }
