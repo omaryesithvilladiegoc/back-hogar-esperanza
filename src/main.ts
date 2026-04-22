@@ -9,14 +9,14 @@ import { checkRateLimit, getClientIp } from './common/security/rate-limit';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = 3000;
+  const port = 3001;
   const expressApp = app.getHttpAdapter().getInstance();
   expressApp.disable('x-powered-by');
   expressApp.set('trust proxy', 1);
 
   // Enable CORS
   app.enableCors({
-    origin: ['https://hogar-esperanza-frontend.vercel.app', 'http://localhost:3001'],
+    origin: ['https://frontend-production-hogar-esperanza-eosin.vercel.app', 'http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
