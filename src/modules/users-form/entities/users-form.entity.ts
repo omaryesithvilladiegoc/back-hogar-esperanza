@@ -17,7 +17,7 @@ export class UsersForm {
   })
   fullName: string;
 
-  @Column({ unique: true })
+  @Column()
   @ApiProperty({
     description: 'Correo electrónico del interesado',
     example: 'juan.perez@email.com',

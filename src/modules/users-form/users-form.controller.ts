@@ -47,17 +47,11 @@ export class UsersFormController {
       );
     }
 
-    console.log(createUsersFormDto);
-
-    try {
-      const newUserForm =
-        await this.usersFormService.create(createUsersFormDto);
-      return newUserForm;
-    } catch (error) {
-      console.log(error);
-
-      throw error;
-    }
+    const newUserForm = await this.usersFormService.create(createUsersFormDto);
+    return {
+      message: 'Formulario enviado correctamente.',
+      data: newUserForm,
+    };
   }
 
   @ApiBearerAuth()

@@ -2,13 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
   IsEmail,
-  IsPhoneNumber,
+  Matches,
   IsInt,
   Min,
   Max,
   IsOptional,
 } from 'class-validator';
-
 
 export class CreateUserFormDto {
   @ApiProperty({
@@ -29,7 +28,10 @@ export class CreateUserFormDto {
     description: 'Número de teléfono del interesado',
     example: '1234567890',
   })
-  @IsPhoneNumber(null)
+  @IsString()
+  @Matches(/^[0-9+\-\s()]{7,20}$/, {
+    message: 'phone must be a valid phone number',
+  })
   phone: string;
 
   @ApiProperty({ description: 'Edad del interesado', example: 35 })
@@ -42,7 +44,7 @@ export class CreateUserFormDto {
     description: 'Plan de interés',
     example: 'Hogar permanente compartido',
   })
-
+  @IsString()
   plan: string;
 
   @IsOptional()

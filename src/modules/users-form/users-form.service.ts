@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserFormDto } from './dto/create-users-form.dto';
@@ -8,6 +8,8 @@ import { Program } from '../plans/entities/plan.entity';
 
 @Injectable()
 export class UsersFormService {
+  private readonly logger = new Logger(UsersFormService.name);
+
   constructor(
     @InjectRepository(UsersForm)
     private readonly usersFormRepository: Repository<UsersForm>,
@@ -17,10 +19,6 @@ export class UsersFormService {
   ) {}
 
   async create(createUsersFormDto: CreateUserFormDto): Promise<UsersForm> {
-    const userForm = this.usersFormRepository.create(createUsersFormDto);
-    const { fullName, email, phone, age, plan } = createUsersFormDto;
-    console.log(createUsersFormDto);
-
     const selectedProgram = await this.plansRepository.findOne({
       where: [
         { id: createUsersFormDto.plan, isActive: true },
@@ -37,9 +35,17 @@ export class UsersFormService {
       (feature) => feature.description,
     );
 
-    try {
-      const savedUserForm = await this.usersFormRepository.save(userForm);
+    const userForm = this.usersFormRepository.create({
+      ...createUsersFormDto,
+      plan: selectedProgram.title,
+      email: createUsersFormDto.email.trim().toLowerCase(),
+      phone: createUsersFormDto.phone.trim(),
+      fullName: createUsersFormDto.fullName.trim(),
+    });
 
+    const savedUserForm = await this.usersFormRepository.save(userForm);
+
+    try {
       await this.sendMailsService.sendMail({
         to: savedUserForm.email,
         subject: 'Confirmacion de Formulario de Usuario',
@@ -98,10 +104,6 @@ export class UsersFormService {
                       font-size: 14px;
                       margin-top: 20px;
                       color: #777;
-                    }
-                    .footer a {
-                      color: #333;
-                      text-decoration: none;
                     }
                   </style>
                 </head>
@@ -178,14 +180,14 @@ export class UsersFormService {
                 </body>
               </html>`,
       });
-
-      return savedUserForm;
     } catch (error) {
-      console.log(error);
-      throw new BadRequestException(
-        'Error al crear el formulario de usuario o enviar el correo.',
+      this.logger.error(
+        `Formulario ${savedUserForm.id} guardado, pero fallo el envio de correos.`,
+        error instanceof Error ? error.stack : undefined,
       );
     }
+
+    return savedUserForm;
   }
 
   async findAll(): Promise<UsersForm[]> {
