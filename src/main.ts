@@ -16,7 +16,7 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors({
-    origin: [ 'frontend-production-hogar-esperanza-eosin.vercel.app', 'http://localhost:3000',],
+    origin: [ 'https://frontend-production-hogar-esperanza-eosin.vercel.app', 'http://localhost:3000',],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
