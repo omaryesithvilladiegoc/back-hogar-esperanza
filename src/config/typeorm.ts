@@ -24,7 +24,7 @@ const config: DataSourceOptions = {
   migrations: ['dist/migrations/*{.js,.ts}'],
   logging: !isProduction,
   synchronize: !isProduction,
-  dropSchema: false,
+  dropSchema: true,
   extra:
     isProduction && useDatabaseUrl
       ? {
