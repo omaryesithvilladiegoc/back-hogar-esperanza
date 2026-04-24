@@ -10,12 +10,15 @@ import {
   HttpException,
   HttpStatus,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/create-auth.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { checkRateLimit, getClientIp } from 'src/common/security/rate-limit';
+import { AuthGuard } from './guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -49,6 +52,16 @@ export class AuthController {
     } catch (error) {
       throw error;
     }
+  }
+
+  @Patch('password')
+  @UseGuards(AuthGuard)
+  async changePassword(
+    @Req() request: Request,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ) {
+    const authRequest = request as Request & { user: { id: string } };
+    return this.authService.changePassword(authRequest.user.id, changePasswordDto);
   }
 
   @Get()

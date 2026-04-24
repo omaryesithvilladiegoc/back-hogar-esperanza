@@ -6,11 +6,11 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import {v4 as uuid} from "uuid"
+import { v4 as uuid } from 'uuid';
 
 @Entity('programs')
 export class Program {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string = uuid();
 
   @Column({ type: 'varchar', length: 150 })
@@ -25,6 +25,7 @@ export class Program {
   @OneToMany(() => ProgramFeature, (feature) => feature.program, {
     cascade: true,
     eager: true,
+    orphanedRowAction: 'delete',
   })
   features: ProgramFeature[];
 }

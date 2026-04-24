@@ -23,16 +23,20 @@ export class User {
   })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   @ApiProperty({
     description: 'Contraseña del usuario',
     example: 'password123',
   })
   password: string;
 
-  @Column({ default: true })
+  @Column({ default: false })
   @ApiProperty({ description: 'Es administrador o no' })
   isAdmin: boolean;
+
+  @Column({ default: false })
+  @ApiProperty({ description: 'Indica si debe cambiar la contrasena en el primer login' })
+  mustChangePassword: boolean;
 
   @Column()
   @ApiProperty({ description: 'Nombre del usuario', example: 'Juan Pérez' })

@@ -2,7 +2,7 @@ import { config as dotenvConfig } from 'dotenv';
 
 dotenvConfig({ path: '.env' });
 
-export const APP_PORT = process.env.APP_PORT;
+export const APP_PORT = process.env.APP_PORT || process.env.PORT;
 export const DB_HOST = process.env.DB_HOST;
 export const DB_PORT = process.env.DB_PORT;
 export const DB_USERNAME = process.env.DB_USERNAME;
@@ -14,7 +14,12 @@ export const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
 export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
 export const EMAIL_HOST = process.env.MAIL_HOST;
+export const EMAIL_PORT = process.env.MAIL_PORT;
 export const EMAIL_USERNAME = process.env.MAIL_USER;
 export const EMAIL_PASSWORD = process.env.MAIL_PASS;
+export const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+export const ADMIN_NAME = process.env.ADMIN_NAME;
+export const CORS_ORIGINS = process.env.CORS_ORIGINS;
 export const JWT_ISSUER = process.env.JWT_ISSUER || 'hogar-esperanza-api';
 export const JWT_AUDIENCE = process.env.JWT_AUDIENCE || 'hogar-esperanza-client';

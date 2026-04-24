@@ -14,7 +14,7 @@ export class PlansController {
 
   @ApiBearerAuth()
   @Role(Roles.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post()
   create(@Body() createPlanDto: CreatePlanDto) {
     return this.plansService.create(createPlanDto);
@@ -27,7 +27,7 @@ export class PlansController {
 
   @ApiBearerAuth()
   @Role(Roles.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.plansService.findOne(id);
@@ -35,7 +35,7 @@ export class PlansController {
 
   @ApiBearerAuth()
   @Role(Roles.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Patch('update/:id')
   update(@Param('id') id: string, @Body() updatePlanDto: UpdatePlanDto) {
     return this.plansService.update(id, updatePlanDto);
@@ -43,9 +43,9 @@ export class PlansController {
 
   @ApiBearerAuth()
   @Role(Roles.ADMIN)
-  @UseGuards(AuthGuard,RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete('delete/:id')
   remove(@Param('id') id: string) {
-        return this.plansService.remove(id);
+    return this.plansService.remove(id);
   }
 }

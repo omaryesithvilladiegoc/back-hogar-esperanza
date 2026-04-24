@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,9 +19,7 @@ export class UserService {
 
   private async hashPassword(password: string): Promise<string> {
     try {
-      const saltRounds = 10;
-      const hash = bcrypt.hashSync(password, saltRounds);
-      return hash;
+      return await bcrypt.hash(password, 10);
     } catch (error) {
       throw error;
     }
@@ -27,41 +30,51 @@ export class UserService {
     const hashPass = await this.hashPassword(password);
     try {
       const findUserByEmail = await this.userRepository.findOneBy({ email });
-      if (findUserByEmail)
-        throw new BadRequestException('El email se encuentra registrado');
+      if (findUserByEmail) {
+        throw new ConflictException('El email se encuentra registrado');
+      }
       const userCreated = this.userRepository.create({
         name,
         email,
         password: hashPass,
+        isAdmin: false,
+        mustChangePassword: false,
       });
       const userSaved: User = await this.userRepository.save(userCreated);
-      if (!userSaved)
-        throw new BadRequestException('Hubo un error al crear el usuario');
+      if (!userSaved) {
+        throw new InternalServerErrorException(
+          'Hubo un error al crear el usuario',
+        );
+      }
       return userSaved;
     } catch (error) {
-      throw error.message;
+      throw error;
     }
   }
 
   async findAll(): Promise<User[]> {
     try {
       const users: User[] = await this.userRepository.find();
-      if (!users)
-        throw new BadRequestException('Hubo un error al obtener los usuario');
+      if (!users) {
+        throw new InternalServerErrorException(
+          'Hubo un error al obtener los usuarios',
+        );
+      }
       return users;
     } catch (error) {
-      throw error.message;
+      throw error;
     }
   }
 
   async findOne(id: string): Promise<User> {
     try {
       const userFound: User = await this.userRepository.findOneBy({ id });
-      if (userFound)
-        throw new BadRequestException('Hubo un error al obtener el usuario');
+      if (!userFound) {
+        throw new NotFoundException('Usuario no encontrado');
+      }
       return userFound;
     } catch (error) {
-      throw error.message;
+      throw error;
     }
   }
 

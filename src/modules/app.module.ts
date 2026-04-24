@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import {
   EMAIL_HOST,
   EMAIL_PASSWORD,
+  EMAIL_PORT,
   EMAIL_USERNAME,
   JWT_AUDIENCE,
   JWT_ISSUER,
@@ -26,6 +27,7 @@ import { FilesModule } from './files/files.module';
 import { PlansModule } from './plans/plans.module';
 import { CredentialsModule } from './credentials/credentials.module';
 import { ProgramFeatureModule } from './program-feature/program-feature.module';
+import { SeederModule } from './seeder/seeder.module';
 
 @Module({
   imports: [
@@ -36,8 +38,8 @@ import { ProgramFeatureModule } from './program-feature/program-feature.module';
     MailerModule.forRoot({
       transport: {
         host: EMAIL_HOST,
-        port: 465,
-        secure: true,
+        port: Number(EMAIL_PORT) || 587,
+        secure: Number(EMAIL_PORT) === 465,
         auth: {
           user: EMAIL_USERNAME,
           pass: EMAIL_PASSWORD,
@@ -73,6 +75,7 @@ import { ProgramFeatureModule } from './program-feature/program-feature.module';
     PlansModule,
     CredentialsModule,
     ProgramFeatureModule,
+    SeederModule,
   ],
   controllers: [],
   providers: [],

@@ -46,8 +46,6 @@ export class ProgramService implements OnModuleInit {
 
       await this.programRepository.save(programCreated);
     }
-
-    console.log('Programas insertados correctamente');
   }
 
   async create(createProgramDto: CreatePlanDto) {
@@ -63,11 +61,11 @@ export class ProgramService implements OnModuleInit {
       features: featuresProgram,
     });
 
-    return await this.programRepository.save(programCreated);
+    return this.programRepository.save(programCreated);
   }
 
   async findAll() {
-    return await this.programRepository.find({
+    return this.programRepository.find({
       where: {
         isActive: true,
       },
@@ -91,50 +89,47 @@ export class ProgramService implements OnModuleInit {
     return program;
   }
 
- async update(id: string, updateProgramDto: UpdatePlanDto) {
-  // 1. Buscamos el programa con sus relaciones
-  const program = await this.programRepository.findOne({
-    where: { id, isActive: true },
-    relations: ['features'], // Cargamos las features para poder editarlas
-  });
-
-  // 2. Si no existe, lanzamos una excepción de NestJS
-  if (!program) {
-    throw new NotFoundException(`Program with ID ${id} not found`);
-  }
-
-  // 3. Extraemos los datos del DTO
-  const { features, ...dataToUpdate } = updateProgramDto;
-
-  // 4. Actualizamos los campos básicos (title, image, etc.)
-  // Object.assign copia las propiedades de dataToUpdate al objeto program
-  Object.assign(program, dataToUpdate);
-
-  // 5. Manejamos la actualización de la relación 'features'
-  if (features) {
-    // Aquí mapeamos los DTOs a la estructura de la entidad
-    // Nota: TypeORM suele reemplazar la lista si le pasas un nuevo array
-    program.features = features.map(featureDto => {
-      return this.featureRepository.create(featureDto);
+  async update(id: string, updateProgramDto: UpdatePlanDto) {
+    const program = await this.programRepository.findOne({
+      where: { id, isActive: true },
+      relations: ['features'],
     });
-  }
 
-  // 6. Guardamos los cambios. 
-  // Esto hará el UPDATE en la tabla 'program' y gestionará 'features'
-  return await this.programRepository.save(program);
-}
+    if (!program) {
+      throw new NotFoundException(`Program with ID ${id} not found`);
+    }
+
+    const { features, ...dataToUpdate } = updateProgramDto;
+
+    Object.assign(program, dataToUpdate);
+
+    if (features) {
+      program.features = features.map((featureDto) =>
+        this.featureRepository.create({
+          description: featureDto.description,
+        }),
+      );
+    }
+
+    return this.programRepository.save(program);
+  }
 
   async remove(id: string) {
-    const program = await this.programRepository.findOneBy({ id });
+    const program = await this.programRepository.findOne({
+      where: { id, isActive: true },
+      relations: ['features'],
+    });
 
     if (!program) {
       throw new NotFoundException('Program not found');
     }
 
-    const programUpdate = await this.programRepository.update(id,{
-      isActive:false
-    })
+    program.isActive = false;
+    await this.programRepository.save(program);
 
-    return programUpdate;
+    return {
+      success: true,
+      id: program.id,
+    };
   }
 }

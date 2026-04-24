@@ -2,21 +2,27 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { APP_PORT } from './helpers/enviroment';
+import { APP_PORT, CORS_ORIGINS } from './helpers/enviroment';
 import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import { checkRateLimit, getClientIp } from './common/security/rate-limit';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = 3001;
+  const port = Number(APP_PORT) || 3001;
   const expressApp = app.getHttpAdapter().getInstance();
   expressApp.disable('x-powered-by');
   expressApp.set('trust proxy', 1);
 
+  const allowedOrigins =
+    CORS_ORIGINS?.split(',').map((origin) => origin.trim()).filter(Boolean) || [
+      'https://frontend-production-hogar-esperanza.vercel.app',
+      'http://localhost:3000',
+    ];
+
   // Enable CORS
   app.enableCors({
-    origin: [ 'https://frontend-production-hogar-esperanza.vercel.app', 'http://localhost:3000',],
+    origin: allowedOrigins,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
@@ -65,7 +71,7 @@ async function bootstrap() {
   );
 
   // Use Morgan logging middleware
-  app.use(morgan('dev'));
+  app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
   const swaggerOptions = new DocumentBuilder()
     .setTitle('Blog de Hogar Esperanza')
@@ -74,7 +80,9 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerOptions);
-  SwaggerModule.setup('api', app, document);
+  if (process.env.NODE_ENV !== 'production' || process.env.ENABLE_SWAGGER === 'true') {
+    SwaggerModule.setup('api', app, document);
+  }
 
   console.log(`Server running on port http://localhost:${port}`);
   await app.listen(port);

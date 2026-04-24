@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { LoginDto } from './dto/create-auth.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { User } from 'src/modules/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,7 +25,16 @@ export class AuthService {
     const { password, email } = loginDto;
 
     try {
-      const userFound: User = await this.userRepository.findOneBy({ email });
+      const userFound: User = await this.userRepository.findOne({
+        where: { email },
+        select: {
+          id: true,
+          email: true,
+          password: true,
+          isAdmin: true,
+          mustChangePassword: true,
+        },
+      });
       if (!userFound) {
         await bcrypt.compare(password, DUMMY_PASSWORD_HASH);
         await delay(500);
@@ -45,16 +54,53 @@ export class AuthService {
         id: userFound.id,
         email: userFound.email,
         isAdmin: userFound.isAdmin,
+        mustChangePassword: userFound.mustChangePassword,
       };
 
       const token = this.jsonWebTokenService.sign(payload);
       return {
         message: 'Login exitoso',
         token,
+        mustChangePassword: userFound.mustChangePassword,
       };
     } catch (error) {
       throw error;
     }
+  }
+
+  async changePassword(userId: string, changePasswordDto: ChangePasswordDto) {
+    const { currentPassword, newPassword } = changePasswordDto;
+
+    const userFound = await this.userRepository.findOne({
+      where: { id: userId },
+      select: {
+        id: true,
+        password: true,
+        mustChangePassword: true,
+      },
+    });
+    if (!userFound) {
+      throw new UnauthorizedException('Usuario no encontrado');
+    }
+
+    const currentPasswordValid = await bcrypt.compare(
+      currentPassword,
+      userFound.password,
+    );
+
+    if (!currentPasswordValid) {
+      throw new UnauthorizedException('Credenciales invalidas');
+    }
+
+    userFound.password = await bcrypt.hash(newPassword, 10);
+    userFound.mustChangePassword = false;
+
+    await this.userRepository.save(userFound);
+
+    return {
+      message: 'Contrasena actualizada con exito',
+      mustChangePassword: false,
+    };
   }
 
   async logOut(headers: any) {
