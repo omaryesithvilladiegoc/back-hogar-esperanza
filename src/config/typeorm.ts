@@ -11,6 +11,7 @@ import { DataSourceOptions, DataSource } from 'typeorm';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const useDatabaseUrl = Boolean(INTERNAL_URL_DATABASE);
+const synchronizeSchema = process.env.TYPEORM_SYNCHRONIZE !== 'false';
 
 const config: DataSourceOptions = {
   type: 'postgres',
@@ -23,8 +24,8 @@ const config: DataSourceOptions = {
   entities: ['dist/**/*.entity{.js,.ts}'],
   migrations: ['dist/migrations/*{.js,.ts}'],
   logging: !isProduction,
-  synchronize: !isProduction,
-  dropSchema: true,
+  synchronize: synchronizeSchema,
+  dropSchema: false,
   extra:
     isProduction && useDatabaseUrl
       ? {

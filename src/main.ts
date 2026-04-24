@@ -9,7 +9,7 @@ import { checkRateLimit, getClientIp } from './common/security/rate-limit';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = Number(APP_PORT) || 3001;
+  const port = Number(process.env.PORT || APP_PORT) || 3001;
   const expressApp = app.getHttpAdapter().getInstance();
   expressApp.disable('x-powered-by');
   expressApp.set('trust proxy', 1);
@@ -84,7 +84,7 @@ async function bootstrap() {
     SwaggerModule.setup('api', app, document);
   }
 
-  console.log(`Server running on port http://localhost:${port}`);
+  console.log(`Server running on port ${port}`);
   await app.listen(port);
 }
 
