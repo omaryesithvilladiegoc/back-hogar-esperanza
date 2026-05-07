@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { SendMailInput } from './dto/create-send-mail.dto';
+import { EMAIL_FROM } from 'src/helpers/enviroment';
 
 @Injectable()
 export class SendMailsService {
@@ -10,7 +11,7 @@ export class SendMailsService {
     const { to, subject, text, html } = messageObject;
     try {
       const response = await this.mailService.sendMail({
-        from: 'denebleo08@gmail.com',
+        from: EMAIL_FROM,
         to,
         subject,
         text,
@@ -22,7 +23,8 @@ export class SendMailsService {
 
       return response;
     } catch (error) {
-      throw error;
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException(`Error SMTP: ${message}`);
     }
   };
 }

@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import {
   EMAIL_HOST,
   EMAIL_PASSWORD,
+  EMAIL_FROM,
   EMAIL_PORT,
   EMAIL_USERNAME,
   JWT_AUDIENCE,
@@ -36,6 +37,9 @@ import { SeederModule } from './seeder/seeder.module';
       load: [typeorm],
     }),
     MailerModule.forRoot({
+      defaults: {
+        from: EMAIL_FROM,
+      },
       transport: {
         host: EMAIL_HOST,
         port: Number(EMAIL_PORT) || 587,
@@ -81,3 +85,5 @@ import { SeederModule } from './seeder/seeder.module';
   providers: [],
 })
 export class AppModule {}
+
+
