@@ -8,15 +8,11 @@ import { AuthModule } from './auth/auth.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { JwtModule } from '@nestjs/jwt';
 import {
-  EMAIL_HOST,
-  EMAIL_PASSWORD,
-  EMAIL_FROM,
-  EMAIL_PORT,
-  EMAIL_USERNAME,
   JWT_AUDIENCE,
   JWT_ISSUER,
   JWT_SECRET,
 } from '../helpers/enviroment';
+import { createMailerConfig } from '../config/mailer';
 import { DonationsModule } from './donations/donations.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { UsersFormModule } from './users-form/users-form.module';
@@ -36,20 +32,7 @@ import { SeederModule } from './seeder/seeder.module';
       isGlobal: true,
       load: [typeorm],
     }),
-    MailerModule.forRoot({
-      defaults: {
-        from: EMAIL_FROM,
-      },
-      transport: {
-        host: EMAIL_HOST,
-        port: Number(EMAIL_PORT) || 587,
-        secure: Number(EMAIL_PORT) === 465,
-        auth: {
-          user: EMAIL_USERNAME,
-          pass: EMAIL_PASSWORD,
-        },
-      },
-    }),
+    MailerModule.forRoot(createMailerConfig()),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -85,5 +68,3 @@ import { SeederModule } from './seeder/seeder.module';
   providers: [],
 })
 export class AppModule {}
-
-
